@@ -31,5 +31,5 @@ export const postComments = mysqlTable("post_comments", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export type Comment = typeof postCommentsTable.$inferSelect;
-export type NewComment = typeof postCommentsTable.$inferInsert;
+export type Comment = typeof postComments.$inferSelect;
+export type NewComment = typeof postComments.$inferInsert;

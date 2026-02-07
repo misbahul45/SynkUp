@@ -17,11 +17,19 @@ export const auth = betterAuth({
         enabled: true, 
     }, 
     socialProviders: { 
-        github: { 
-            clientId: process.env.GITHUB_CLIENT_ID as string, 
-            clientSecret: process.env.GITHUB_CLIENT_SECRET as string, 
-        }, 
+
     }, 
+    password: {
+        hash: async (password:string) => {
+            return await Bun.password.hash(password, {
+                algorithm: "argon2id",
+            });
+        },
+        verify: async (password:string, hash:string) => {
+            return await Bun.password.verify(password, hash);
+        },
+    }
+
 });
 
 

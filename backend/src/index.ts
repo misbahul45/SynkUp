@@ -10,13 +10,13 @@ export const app = new Hono<{
 		user: typeof auth.$Infer.Session.user | null;
 		session: typeof auth.$Infer.Session.session | null
 	}
-}>().basePath(`/api/${process.env.API_VERSION || 'v1'}`)
+}>().basePath(`/api/${Bun.env.API_VERSION || 'v1'}`)
 
 
 app.use(
   "/auth/*",
   cors({
-    origin: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
+    origin: Bun.env.BETTER_AUTH_URL || 'http://localhost:3000',
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["POST", "GET", "OPTIONS"],
     credentials: true,

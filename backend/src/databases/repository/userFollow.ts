@@ -5,10 +5,10 @@ import {
   unique,
 } from "drizzle-orm/mysql-core";
 
-import { usersTable } from "./users";
 import { sql } from "drizzle-orm";
+import { user } from "./auth";
 
-export const userFollowsTable = mysqlTable(
+export const userFollows = mysqlTable(
   "user_follows",
   {
     id: varchar("id", { length: 36 })
@@ -17,13 +17,13 @@ export const userFollowsTable = mysqlTable(
 
     followerId: varchar("follower_id", { length: 36 })
       .notNull()
-      .references(() => usersTable.id, {
+      .references(() => user.id, {
         onDelete: "cascade",
       }),
 
     followingId: varchar("following_id", { length: 36 })
       .notNull()
-      .references(() => usersTable.id, {
+      .references(() => user.id, {
         onDelete: "cascade",
       }),
 
@@ -35,5 +35,5 @@ export const userFollowsTable = mysqlTable(
   })
 );
 
-export type Follow = typeof userFollowsTable.$inferSelect;
-export type NewFollow = typeof userFollowsTable.$inferInsert;
+export type Follow = typeof userFollows.$inferSelect;
+export type NewFollow = typeof userFollows.$inferInsert;

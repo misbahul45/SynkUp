@@ -1,27 +1,15 @@
 import { Hono } from "hono"
+import { loginMiddleware } from "../../../middleware/auth.middleware"
+import { createUserController, deleteUserController, getAllUserController, geUserController, updateUserController } from "./users.controller"
+import { validateBody, validateParams, validateQuery } from "../../../middleware/validate.middleware"
+import { UserDTO } from "./users.dto"
+
 const userRouter = new Hono().basePath('/users')
 
+userRouter.get('/', validateQuery(UserDTO.querySearch()),getAllUserController) 
+userRouter.post('/', validateBody(UserDTO.create()),loginMiddleware, createUserController)
+userRouter.get('/:id', validateParams(UserDTO.params()),loginMiddleware, geUserController)
+userRouter.patch('/:id',validateParams(UserDTO.params()),validateBody(UserDTO.update()),loginMiddleware, updateUserController)
+userRouter.delete('/:id',validateParams(UserDTO.params()),loginMiddleware, deleteUserController)
 
-userRouter.get('/', (c) => {
-  return c.json({ message: 'User route' })
-})
-
-userRouter.post('/', (c) => {
-  return c.json({ message: 'Create user' })
-})
-
-userRouter.get('/:id', (c) => {
-  const { id } = c.req.param()
-  return c.json({ message: `Get user with ID: ${id}` })
-})
-
-userRouter.put('/:id', (c) => {
-  const { id } = c.req.param()
-  return c.json({ message: `Update user with ID: ${id}` })
-})
-
-userRouter.delete('/:id', (c) => {
-  const { id } = c.req.param()
-  return c.json({ message: `Delete user with ID: ${id}` })
-})
-export default userRouter
+  export default userRouter
