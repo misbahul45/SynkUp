@@ -6,10 +6,9 @@ import {
 } from "drizzle-orm/mysql-core";
 
 import { sql } from "drizzle-orm";
+import { user } from "./auth";
 
-import { usersTable } from "./users";
-
-export const postsTable = mysqlTable("posts", {
+export const post = mysqlTable("posts", {
   id: varchar("id", { length: 36 })
     .primaryKey()
     .default(sql`(UUID())`),
@@ -20,7 +19,7 @@ export const postsTable = mysqlTable("posts", {
 
   authorId: varchar("author_id", { length: 36 })
     .notNull()
-    .references(() => usersTable.id, {
+    .references(() => user.id, {
       onDelete: "cascade",
     }),
 
@@ -32,5 +31,5 @@ export const postsTable = mysqlTable("posts", {
     .onUpdateNow(),
 });
 
-export type Post = typeof postsTable.$inferSelect;
-export type NewPost = typeof postsTable.$inferInsert;
+export type Post = typeof post.$inferSelect;
+export type NewPost = typeof post.$inferInsert;

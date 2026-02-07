@@ -5,24 +5,24 @@ import {
   timestamp,
 } from "drizzle-orm/mysql-core";
 
-import { usersTable } from "./users";
-import { postsTable } from "./posts.";
+import { post } from "./posts.";
 import { sql } from "drizzle-orm";
+import { user } from "./auth";
 
-export const postCommentsTable = mysqlTable("post_comments", {
+export const postComments = mysqlTable("post_comments", {
   id: varchar("id", { length: 36 })
     .primaryKey()
     .default(sql`(UUID())`),
 
   userId: varchar("user_id", { length: 36 })
     .notNull()
-    .references(() => usersTable.id, {
+    .references(() => user.id, {
       onDelete: "cascade",
     }),
 
   postId: varchar("post_id", { length: 36 })
     .notNull()
-    .references(() => postsTable.id, {
+    .references(() => post.id, {
       onDelete: "cascade",
     }),
 

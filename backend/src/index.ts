@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import authRouter, { auth } from './modules/v1/auth';
 import userRouter from './modules/v1/users/users.router';
 import docsRouter from './modules/v1/docs/docs.router.';
+import postsRouter from './modules/v1/posts/posts.router';
 
 export const app = new Hono<{
 	Variables: {
@@ -54,7 +55,7 @@ app.get("/me", (c) => {
 app.route('/', authRouter)
 app.route('/', userRouter)
 app.route('/', docsRouter)
-app.route('/', )
+app.route('/', postsRouter)
 
 
 export default app
