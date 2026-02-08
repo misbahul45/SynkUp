@@ -5,7 +5,7 @@ import {
   timestamp,
 } from "drizzle-orm/mysql-core";
 
-import { post } from "./posts.";
+import { post } from "./posts";
 import { sql } from "drizzle-orm";
 import { user } from "./auth";
 

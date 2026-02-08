@@ -10,7 +10,7 @@ import {
   updatePostCommentController,
 } from "./comments.controller";
 
-const commentsRouter = new Hono().basePath("/comments");
+const commentsRouter = new Hono()
 
 // Routes
 commentsRouter.get(

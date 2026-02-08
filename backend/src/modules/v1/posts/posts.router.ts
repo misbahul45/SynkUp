@@ -4,7 +4,12 @@ import { loginMiddleware } from "../../../middleware/auth.middleware"
 import { validateBody, validateParams, validateQuery } from "../../../middleware/validate.middleware"
 import { PostDTO } from "./index/index.dto"
 import { createPostController, deletePostController, getPostByIdController, getPostsController, updatePostController } from "./index/index.controller"
+import likesRouter from "./likes/likes.router"
 const postsRouter = new Hono().basePath('/posts')
+
+//sub-router
+postsRouter.route('/comments', commentsRouter)
+postsRouter.route('/', likesRouter)
 
 // posts routes
 postsRouter.get('/', 
@@ -33,8 +38,6 @@ postsRouter.delete('/:id',
 )
 
 
-//sub-router
-postsRouter.route('/', commentsRouter)
 
 
 export default postsRouter

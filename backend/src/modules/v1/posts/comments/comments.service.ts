@@ -3,6 +3,7 @@ import { postComment } from "../../../../databases/repository/postComment";
 import { and, eq, like } from "drizzle-orm";
 import { AppError } from "../../../../lib/error";
 import { PostCommentDTOType } from "./comments.dto";
+import { post } from "../../../../databases/repository/posts";
 
 
 export const getPostCommentsService = async (query: PostCommentDTOType.Query) => {
@@ -39,16 +40,42 @@ export const getPostCommentService = async (id: string) => {
   return result[0];
 };
 
+
 export const createPostCommentService = async (
   commentData: PostCommentDTOType.Create,
   userId: string
 ) => {
-  return await db.insert(postComment).values({
+
+  const existingPost = await db
+    .select()
+    .from(post)
+    .where(eq(post.id, commentData.postId));
+
+  if (!existingPost[0]) {
+    throw new AppError("Post not found", 404);
+  }
+
+  await db.insert(postComment).values({
     postId: commentData.postId,
     content: commentData.content,
     userId: userId,
   });
+
+  const [inserted] = await db
+    .select()
+    .from(postComment)
+    .where(
+      and(
+        eq(postComment.postId, commentData.postId),
+        eq(postComment.userId, userId)
+      )
+    )
+    .orderBy(postComment.createdAt)
+    .limit(1);
+
+  return inserted;
 };
+
 
 export const updatePostCommentService = async (
   commentUpdate: PostCommentDTOType.Update,
@@ -57,17 +84,28 @@ export const updatePostCommentService = async (
   const existing = await db.select().from(postComment).where(eq(postComment.id, id));
   if (!existing[0]) throw new AppError("Comment not found", 404);
 
-  return await db
+  await db
     .update(postComment)
     .set({
       content: commentUpdate.content ?? existing[0].content,
     })
     .where(eq(postComment.id, id));
+
+
+  const [updated] = await db
+    .select()
+    .from(postComment)
+    .where(eq(postComment.id, id));
+
+  return updated;
 };
 
 export const deletePostCommentService = async (id: string) => {
   const existing = await db.select().from(postComment).where(eq(postComment.id, id));
   if (!existing[0]) throw new AppError("Comment not found", 404);
 
-  return await db.delete(postComment).where(eq(postComment.id, id));
+  await db.delete(postComment).where(eq(postComment.id, id));
+
+  return existing[0];  
 };
+

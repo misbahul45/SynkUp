@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import {  mysqlTable, varchar } from "drizzle-orm/mysql-core";
 import { user } from "./auth";
-import { post } from "./posts.";
+import { post } from "./posts";
 
 export const postLike=mysqlTable('post_likes', {
     id: varchar("id", { length: 36 })

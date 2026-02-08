@@ -1,6 +1,6 @@
 import { desc, eq, like } from "drizzle-orm";
 import db from "../../../../databases/init";
-import { post } from "../../../../databases/repository/posts.";
+import { post } from "../../../../databases/repository/posts";
 import { AppError } from "../../../../lib/error";
 import { PostDTOType } from "./index.dto"
 
