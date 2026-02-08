@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "73ebe940-e4d9-498b-85c0-8f521d897964",
+  "id": "c6b7addf-bd38-445f-a9ce-f4f3e2bc0297",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -270,13 +270,6 @@
           "autoincrement": false,
           "default": false
         },
-        "image": {
-          "name": "image",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3)",
@@ -426,10 +419,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "post_comments_user_id_users_id_fk": {
-          "name": "post_comments_user_id_users_id_fk",
+        "post_comments_user_id_user_id_fk": {
+          "name": "post_comments_user_id_user_id_fk",
           "tableFrom": "post_comments",
-          "tableTo": "users",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
@@ -516,10 +509,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "posts_author_id_users_id_fk": {
-          "name": "posts_author_id_users_id_fk",
+        "posts_author_id_user_id_fk": {
+          "name": "posts_author_id_user_id_fk",
           "tableFrom": "posts",
-          "tableTo": "users",
+          "tableTo": "user",
           "columnsFrom": [
             "author_id"
           ],
@@ -533,6 +526,51 @@
       "compositePrimaryKeys": {
         "posts_id": {
           "name": "posts_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "profile": {
+      "name": "profile",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "profile_id": {
+          "name": "profile_id",
           "columns": [
             "id"
           ]
@@ -577,10 +615,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_follows_follower_id_users_id_fk": {
-          "name": "user_follows_follower_id_users_id_fk",
+        "user_follows_follower_id_user_id_fk": {
+          "name": "user_follows_follower_id_user_id_fk",
           "tableFrom": "user_follows",
-          "tableTo": "users",
+          "tableTo": "user",
           "columnsFrom": [
             "follower_id"
           ],
@@ -590,10 +628,10 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "user_follows_following_id_users_id_fk": {
-          "name": "user_follows_following_id_users_id_fk",
+        "user_follows_following_id_user_id_fk": {
+          "name": "user_follows_following_id_user_id_fk",
           "tableFrom": "user_follows",
-          "tableTo": "users",
+          "tableTo": "user",
           "columnsFrom": [
             "following_id"
           ],
@@ -618,91 +656,6 @@
           "columns": [
             "follower_id",
             "following_id"
-          ]
-        }
-      },
-      "checkConstraint": {}
-    },
-    "users": {
-      "name": "users",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(UUID())"
-        },
-        "first_name": {
-          "name": "first_name",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "last_name": {
-          "name": "last_name",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "password": {
-          "name": "password",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "auth_provider": {
-          "name": "auth_provider",
-          "type": "enum('LOCAL','GOOGLE')",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'LOCAL'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
-          "default": "(now())"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "users_id": {
-          "name": "users_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "uniqueConstraints": {
-        "users_email_unique": {
-          "name": "users_email_unique",
-          "columns": [
-            "email"
           ]
         }
       },

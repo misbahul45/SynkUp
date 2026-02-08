@@ -1,9 +1,9 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
-import authRouter, { auth } from './modules/v1/auth';
-import userRouter from './modules/v1/users/users.router';
+import profileRouter from './modules/v1/profile/profile.router';
 import docsRouter from './modules/v1/docs/docs.router.';
 import postsRouter from './modules/v1/posts/posts.router';
+import { auth } from './modules/v1/auth';
 
 export const app = new Hono<{
 	Variables: {
@@ -45,6 +45,12 @@ app.get('/health', (c) => {
   return c.json({ message: 'Server is healthy!' })
 })
 
+
+app.on(["GET", "POST"], "/auth/*", (c) => {
+  return auth.handler(c.req.raw);
+});
+
+
 app.get("/me", (c) => {
   const user = c.get("user")
   if (!user) return c.json({ error: "Unauthorized" }, 401)
@@ -52,8 +58,7 @@ app.get("/me", (c) => {
 })
 
 
-app.route('/', authRouter)
-app.route('/', userRouter)
+app.route('/', profileRouter)
 app.route('/', docsRouter)
 app.route('/', postsRouter)
 

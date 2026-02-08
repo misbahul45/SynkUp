@@ -1,16 +1,22 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import db from "../../../databases/init";
-import { Hono } from "hono";
+import { openAPI } from "better-auth/plugins"
+import * as schema from "../../../databases/repository/auth";
 
 export const auth = betterAuth({
+    basePath:'/api/v1/auth',
     database: drizzleAdapter(db, {
         provider: "mysql",
+        schema
     }),
+    plugins: [
+        openAPI()
+    ],
     advanced: {
         defaultCookieAttributes: {
-            sameSite: "none", 
-            secure: true,
+            sameSite: "lax",//production use 'none' 
+            secure: false, //production true
         },
     },
     emailAndPassword: { 
@@ -33,10 +39,3 @@ export const auth = betterAuth({
 });
 
 
-const authRouter = new Hono().basePath('/auth');
-
-authRouter.on(["GET", "POST"], "/*", (c) => {
-  return auth.handler(c.req.raw);
-});
-
-export default authRouter;
