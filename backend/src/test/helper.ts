@@ -10,7 +10,7 @@ export async function resetDatabase() {
 
   await db.execute(sql`SET FOREIGN_KEY_CHECKS = 0;`);
 
-  for (const row of tables[0] as any[]) {
+  for (const row of (tables as any[])[0]) {
     await db.execute(sql.raw(`TRUNCATE TABLE \`${row.TABLE_NAME}\`;`));
   }
 

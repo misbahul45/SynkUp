@@ -9,7 +9,7 @@ import { post } from "./posts.";
 import { sql } from "drizzle-orm";
 import { user } from "./auth";
 
-export const postComments = mysqlTable("post_comments", {
+export const postComment = mysqlTable("post_comments", {
   id: varchar("id", { length: 36 })
     .primaryKey()
     .default(sql`(UUID())`),
@@ -31,5 +31,5 @@ export const postComments = mysqlTable("post_comments", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export type Comment = typeof postComments.$inferSelect;
-export type NewComment = typeof postComments.$inferInsert;
+export type Comment = typeof postComment.$inferSelect;
+export type NewComment = typeof postComment.$inferInsert;

@@ -17,7 +17,11 @@ export const tryCatch = async <T>(
   try {
     return await fn();
   } catch (err) {
-    console.error(err);
-    throw new AppError(message);
+
+    if (err instanceof AppError) {
+      throw err;
+    }
+
+    throw new AppError(message, 500);
   }
 };

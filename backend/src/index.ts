@@ -4,6 +4,7 @@ import profileRouter from './modules/v1/profile/profile.router';
 import docsRouter from './modules/v1/docs/docs.router.';
 import postsRouter from './modules/v1/posts/posts.router';
 import { auth } from './modules/v1/auth';
+import { AppError } from './lib/error';
 
 export const app = new Hono<{
 	Variables: {
@@ -39,6 +40,28 @@ app.use("*", async (c, next) => {
 
   await next()
 })
+
+app.onError((err, c) => {
+  if (err instanceof AppError) {
+    return c.json(
+      {
+        success: false,
+        message: err.message,
+      },
+      err.statusCode
+    );
+  }
+
+  console.error(err);
+
+  return c.json(
+    {
+      success: false,
+      message: "Internal Server Error",
+    },
+    500
+  );
+});
 
 //routes
 app.get('/health', (c) => {
