@@ -44,8 +44,6 @@ class ApiClient {
     }
   }
 
-  // 🔹 Shortcut
-
   static Future<ApiResponse<Map<String, dynamic>>> get(String url) =>
       request(method: "GET", url: url);
 

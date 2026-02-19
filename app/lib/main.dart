@@ -1,3 +1,5 @@
+import 'package:app/core/router/app_router.dart';
+import 'package:app/core/router/app_routes.dart';
 import 'package:app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +22,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'SynkUp',
-        home: const Scaffold(),
+        initialRoute: AppRoutes.login,
+        onGenerateRoute: AppRouter.generateRoute,
       ),
     );
   }
