@@ -14,7 +14,7 @@ export class PostDTO {
             id: z.string().uuid(),
         });
     }
-
+ 
     static create() {
         return z.object({
             caption: z.string().min(1),

@@ -35,6 +35,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_bloc: ^9.1.1
+  flutter_dotenv: ^6.0.0
+  http: ^1.6.0
+  equatable: ^2.0.5
+  flutter_secure_storage: ^9.0.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +62,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - .env
     - assets/images/logo.png
     - assets/images/loginEmote.png
     - assets/images/google.png
