@@ -6,6 +6,7 @@ import '../constants/app_spacing.dart';
 class AppTheme {
   static ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
+    
     brightness: Brightness.light,
     colorScheme: const ColorScheme.light(
       primary: AppColors.primary,
